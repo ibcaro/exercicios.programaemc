@@ -1,0 +1,54 @@
+// ex1
+//felipe dias RA:10741263
+// rebeca rocha RA: 10723463
+
+
+#include <stdio.h>
+#include <string.h>
+
+void ex1(const char *str, char *resultado) {
+    if (str == NULL || str[0] == '\0') {
+        if (resultado != NULL) resultado[0] = '\0';
+        return;
+    }
+
+    int i = 0;
+    int len = strlen(str);
+    int pos = 0; // posiÃ§Ã£o de escrita no buffer de resultado
+
+    while (i < len) {
+        char atual = str[i];
+        int contagem = 0;
+
+        // conta quantos caracteres iguais consecutivos existem
+        while (i < len && str[i] == atual) {
+            contagem++;
+            i++;
+        }
+
+        // escreve no resultado no formato "c<qtd>" ou "-c<qtd>" a partir do segundo grupo
+        if (pos == 0) {
+            pos += sprintf(resultado + pos, "%c%d", atual, contagem);
+        } else {
+            pos += sprintf(resultado + pos, "-%c%d", atual, contagem);
+        }
+    }
+}
+
+int main() {
+    char resultado[256];
+
+    // ex1. 1
+    char texto1[] = "aaaaaaabbbbbaaaaaaaaaa";
+    ex1(texto1, resultado);
+    printf("Entrada:  \"%s\"\n", texto1);
+    printf("Saida:    \"%s\"\n\n", resultado);
+
+    // ex1. 2
+    char texto2[] = "abcabc";
+    ex1(texto2, resultado);
+    printf("Entrada:  \"%s\"\n", texto2);
+    printf("Saida:    \"%s\"\n", resultado);
+
+    return 0;
+}
