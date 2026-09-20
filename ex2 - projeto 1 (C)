@@ -1,0 +1,59 @@
+// ex2
+//felipe dias RA:10741263
+// rebeca rocha RA: 10723463
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void ex2(const char *str, char *resultado) {
+    if (str == NULL || str[0] == '\0') {
+        if (resultado != NULL) resultado[0] = '\0';
+        return;
+    }
+
+    int i = 0;
+    int pos = 0; // posiÃ§Ã£o de escrita no buffer resultado
+
+    while (str[i] != '\0') {
+        char c = str[i]; // captura o caractere (ex: 'a')
+        i++;
+
+        // converte os dÃ­gitos numÃ©ricos que vÃªm logo apÃ³s o caractere
+        int qtd = 0;
+        while (str[i] >= '0' && str[i] <= '9') {
+            qtd = qtd * 10 + (str[i] - '0');
+            i++;
+        }
+
+        // repete o caractere "qtd" vezes na string final
+        for (int j = 0; j < qtd; j++) {
+            resultado[pos++] = c;
+        }
+
+        // pula o hÃ­fen divisor, se houver
+        if (str[i] == '-') {
+            i++;
+        }
+    }
+
+    resultado[pos] = '\0'; // garante o tÃ©rmino da string
+}
+
+int main() {
+    char resultado[256];
+
+    // ex2. 1
+    char texto1[] = "a7-b5-a10";
+    ex2(texto1, resultado);
+    printf("Entrada:  \"%s\"\n", texto1);
+    printf("Saida:    \"%s\"\n\n", resultado);
+
+    // ex2. 2
+    char texto2[] = "a6-b15-c1-d1";
+    ex2(texto2, resultado);
+    printf("Entrada:  \"%s\"\n", texto2);
+    printf("Saida:    \"%s\"\n", resultado);
+
+    return 0;
+}
