@@ -1,0 +1,77 @@
+// ex3
+//felipe dias RA:10741263
+// rebeca rocha RA: 10723463
+
+#include <stdio.h>
+#include <string.h>
+
+void ex3(const char *str, char *resultado) {
+    if (str == NULL || str[0] == '\0') {
+        if (resultado != NULL) resultado[0] = '\0';
+        return;
+    }
+
+    int len = strlen(str);
+    int i = 0;
+    int pos = 0; // posiÃ§Ã£o no buffer de saÃ­da
+
+    while (i < len) {
+        int melhor_tam = 0;
+        int melhor_qtd = 0;
+
+        // procura a maior subcadeia que se repete mais de uma vez a partir de str[i]
+        for (int tam = 1; tam <= (len - i) / 2; tam++) {
+            int rep = 1;
+            while (i + (rep + 1) * tam <= len && 
+                   strncmp(str + i, str + i + rep * tam, tam) == 0) {
+                rep++;
+            }
+
+            if (rep > 1) {
+                melhor_tam = tam;
+                melhor_qtd = rep;
+            }
+        }
+
+        if (melhor_qtd > 1) {
+            // escreve o padrÃ£o e o nÃºmero de repetiÃ§Ãµes
+            if (pos == 0) {
+                pos += sprintf(resultado + pos, "%.*s%d", melhor_tam, str + i, melhor_qtd);
+            } else {
+                pos += sprintf(resultado + pos, "-%.*s%d", melhor_tam, str + i, melhor_qtd);
+            }
+            i += melhor_tam * melhor_qtd; // avanÃ§a o Ã­ndice apÃ³s os elementos processados
+        } else {
+            // caso nÃ£o encontre padrÃ£o repetido na posiÃ§Ã£o atual (descarta o prefixo nÃ£o repetido)
+            i++;
+        }
+    }
+
+    resultado[pos] = '\0';
+}
+
+int main() {
+    char resultado[256];
+
+    // ex3. 1
+    char t1[] = "xyzxyzxyzababababababababababab";
+    ex3(t1, resultado);
+    printf("Entrada: \"%s\"\nSaida:   \"%s\"\n\n", t1, resultado);
+
+    // ex3. 2
+    char t2[] = "abababababababaaaaaaaaaaaaaaa";
+    ex3(t2, resultado);
+    printf("Entrada: \"%s\"\nSaida:   \"%s\"\n\n", t2, resultado);
+
+    // ex3. 3
+    char t3[] = "abcabcabcabcxyxyxyccccccc";
+    ex3(t3, resultado);
+    printf("Entrada: \"%s\"\nSaida:   \"%s\"\n\n", t3, resultado);
+
+    // ex3. 4
+    char t4[] = "antonioantonioantoniocarloscarlos";
+    ex3(t4, resultado);
+    printf("Entrada: \"%s\"\nSaida:   \"%s\"\n", t4, resultado);
+
+    return 0;
+}
